@@ -9,19 +9,21 @@
       <router-link to="/login" class="pure-button">Login</router-link>
     </div>
     <div v-else>
-      <!-- <div v-for="poll in polls">
+      <div v-for="poll in polls" v-bind:key="poll._id">
         <poll v-bind:poll="poll"></poll>
-      </div> -->
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
+import Poll from '@/components/Poll.vue';
+
 export default {
   name: 'home',
   components: {
-
+    Poll
   },
   data() {
     return {};
@@ -34,8 +36,11 @@ export default {
       return this.$store.state.polls;
     }
   },
-  created() {
-    this.$store.dispatch("getUser");
+  async created() {
+    await this.$store.dispatch("getUser");
+    if (this.user) {
+      this.$store.dispatch("getPolls");
+    }
   }
 
 }

@@ -1,17 +1,20 @@
 <template>
   <div id="app">
-    <Header />
+    <loading />
+    <title-bar />
     <router-view/>
   </div>
 </template>
 
 <script>
-import Header from '@/components/Header.vue'
+import TitleBar from '@/components/TitleBar.vue'
+import Loading from '@/components/Loading.vue'
 
 export default {
   name: 'app',
   components: {
-    Header
+    TitleBar,
+    Loading,
   }
 }
 </script>

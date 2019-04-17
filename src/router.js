@@ -3,6 +3,8 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 import Register from './views/Register.vue'
 import Login from './views/Login.vue'
+import CreatePoll from './views/CreatePoll.vue'
+
 
 Vue.use(Router)
 
@@ -23,6 +25,11 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/create-poll',
+      name: 'create-poll',
+      component: CreatePoll
     }
   ]
 })
