@@ -46,8 +46,9 @@ export default {
           username: this.username,
           password: this.password,
         });
+        await this.$store.dispatch("getUser");
         if (this.error === "") {
-          this.$router.push('mypage'); //Again, sends the user to mypage if there is no error
+          this.$router.push('/'); //Again, sends the user to mypage if there is no error
         }
       } catch (error) {
         console.log(error);
@@ -58,12 +59,6 @@ export default {
 </script>
 
 <style scoped>
-#log-in-form {
-  /* width: 40%;
-  margin: auto;
-  display: flex;
-  flex-direction: column; */
-}
 form {
   width: 50%;
   margin: auto;

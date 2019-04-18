@@ -95,6 +95,7 @@ export default new Vuex.Store({
       try {
         await axios.put("/api/polls/" + data.id, {
           optionsVotes: data.optionsVotes,
+          index: data.index
         });
       } catch (error) {
         console.log(error);

@@ -3,14 +3,21 @@ const bcrypt = require('bcrypt');
 const express = require('express');
 const router = express.Router();
 const auth = require("./auth.js");
+// const multer = require('multer');
+// const upload = multer({
+//   dest: '../public/images',
+//   limits {
+//     filesize: 10000000
+//   }
+// });
 
 const SALT_WORK_FACTOR = 10; //The number of times the password will be salted
 
 const userSchema = new mongoose.Schema({
   username: String,
   password: String,
-  name: String, //This is the person's real name
   tokens: [], //This is a list of (one for each browser they're logged in on)
+  // imagePath: String,
 });
 
 userSchema.pre('save', async function(next) {
@@ -39,7 +46,7 @@ userSchema.methods.comparePassword = async function(password) {
 
 userSchema.methods.toJSON = function() {
   var obj = this.toObject();
-  delete obj.password;
+  delete obj.password; //Strip out the secret stuff, of course.
   delete obj.tokens;
   return obj;
 }
@@ -77,9 +84,9 @@ const User = mongoose.model('User', userSchema); //Tell Mongoose to compile a mo
 
 router.post('/', async (request, response) => { //Endpoint to create a new user
   console.log("Beginning to register a user.");
-  if (!request.body.username || !request.body.password || !request.body.name) {
+  if (!request.body.username || !request.body.password) {
     return response.status(400).send({
-      message: "A Name, Username and Password are required!"
+      message: "Username and Password are required!"
     });
   }
 
@@ -99,7 +106,6 @@ router.post('/', async (request, response) => { //Endpoint to create a new user
     const user = new User({
       username: request.body.username,
       password: request.body.password,
-      name: request.body.name,
     });
     await user.save(); //Save this new document in the database. Remember that before it's saved, it will run through the .pre() function above which salts and hashes the password
     // console.log("We just made a new user!");

@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div class="poll">
     <div class="pollHeader">
-      <img class="userPortrait" src="images/Portrait_Placeholder_Square.png" />
+      <!-- <img class="userPortrait" src="poll.user.imagePath" /> -->
       <p class="username">
-        {{user.username}}
+        {{poll.user.username}}
       </p>
       <p class="date">
         {{formatedDate}}
@@ -14,7 +14,7 @@
     </p>
     <div class="buttons">
       <div class="vote" v-for="i in poll.optionsText.length" v-bind:key="i">
-        <button v-on:click="addCount(i -1)">{{poll.optionsText[i - 1]}}</button>
+        <button class="pure-button" v-on:click="addCount(i -1)">{{poll.optionsText[i - 1]}}</button>
         <strong>
           Votes: {{poll.optionsVotes[i-1]}}
         </strong>
@@ -25,7 +25,8 @@
       </div>
     </div>
     <div class="pollBottomButtons">
-      <button v-on:click="deletePoll()" class="delete">Delete Poll</button>
+      <button v-if="poll.user.username===user.username" v-on:click="deletePoll()" class="pure-button delete">Delete Poll</button>
+      <!-- Note that the delete button is only being hidden by the front end! We've got to change this. -->
     </div>
   </div>
 </template>
@@ -48,9 +49,11 @@ export default {
       Vue.set(this.poll.optionsVotes, index, this.poll.optionsVotes[index] + 1);
       let data = {
         id: this.poll._id,
-        optionsVotes: this.poll.optionsVotes
+        optionsVotes: this.poll.optionsVotes,
+        index: index
       };
       await this.$store.dispatch('addCount', data);
+      await this.$store.dispatch('getPolls');
     },
     async deletePoll() {
       this.$store.dispatch('deletePoll', this.poll._id)
@@ -86,9 +89,6 @@ export default {
 /* I think I want to go with more pure CSS stuff here. */
 button {
   background-color: rgb(184, 227, 209);
-  padding: 1.5%;
-  border-radius: 5px;
-  border-style: none;
 }
 
 .pollBottomButtons {
@@ -99,8 +99,9 @@ button {
 
 .delete {
   background-color: rgb(255, 107, 107);
-  display: flex;
-  justify-content: center;
+  color: white;
+  /* display: flex;
+  justify-content: center; */
 }
 .poll {
   border-color: rgb(167, 167, 167);
@@ -149,7 +150,7 @@ button {
 }
 
 .vote {
-  padding: 1%;
+  /* padding: 1%; */
   display: flex;
   flex-direction: column;
 }

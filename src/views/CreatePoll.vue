@@ -1,24 +1,26 @@
 <!-- I think this would be ideal to implement as a component instead, if you have time! -->
 
 <template>
-  <form v-on:submit.prevent="addPoll()" id="createPoll">
+<div id="createWrapper">
+  <form class="pure-form" v-on:submit.prevent="addPoll()" id="createPoll">
     <h2>Create Poll:</h2>
-    <textarea v-model="questionInCreation" placeholder="Enter text of poll"></textarea>
+    <fieldset class="pure-group">
+      <textarea class="pure-input-1-2" v-model="questionInCreation" placeholder="Enter text of poll"></textarea>
+      <br />
+      <div id="options" v-for="i in optionsInCreation.length" v-bind:key="i">
+        <input class="pure-input-1-2" v-bind:placeholder="'Option ' + i" v-model="optionsInCreation[i - 1]" />
+        <br />
+      </div>
+    </fieldset>
+    <button class="pure-button" type="button" v-on:click="addOption()">Add Option</button>
     <br />
-    <div id="options" v-for="i in optionsInCreation.length" v-bind:key="i">
-      <input v-bind:placeholder="'Option ' + i" v-model="optionsInCreation[i - 1]" />
-    </div>
-    <button type="button" v-on:click="addOption()">Add Option</button>
-    <br />
-    <button type="submit" id="sendPoll">Create new Poll!</button>
+    <button class="pure-button pure-button-primary" type="submit" id="sendPoll">Create new Poll!</button>
     <p id="complete" v-show="questionInCreation ==='' | optionsInCreation[0] ==='' | optionsInCreation[1] === ''">
       Please enter a poll question and possible options.
     </p>
   </form>
+</div>
 </template>
-
-<styles>
-</styles>
 
 <script>
 export default {
@@ -56,3 +58,27 @@ export default {
   }
 }
 </script>
+
+<style>
+#createWrapper {
+  width: 100%;
+}
+.pure-form {
+  width: 50%;
+  margin: auto;
+}
+
+.pure-button {
+  margin: 0.5em;
+}
+
+.pure-group{
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+}
+.pure-input-1-2 {
+  width: 40% !important;
+  margin: auto !important;
+}
+</style>

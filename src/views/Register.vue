@@ -1,16 +1,10 @@
 
 <template>
-<div>
+<div class = "register">
   <h1>Register for an account</h1>
   <form v-on:submit.prevent="register" class="pure-form pure-form-aligned">
     <fieldset>
       <p class="pure-form-message-inline">All fields are required.</p>
-
-      <div class="pure-control-group">
-        <label for="name">Real Name</label>
-        <input v-model="name" type="text" placeholder="Real Name">
-      </div>
-
       <div class="pure-control-group">
         <label for="username">Username</label>
         <input v-model="username" type="text" placeholder="Username">
@@ -22,7 +16,7 @@
       </div>
 
       <div class="pure-controls">
-        <button type="submit" class="pure-button pure-button-primary">Submit</button>
+        <button type="submit" class="pure-button pure-button-primary">Register</button>
       </div>
     </fieldset>
   </form>
@@ -37,7 +31,6 @@ export default {
   name: 'register',
   data() {
     return {
-      name: '',
       username: '',
       password: '',
       error: '',
@@ -47,12 +40,11 @@ export default {
     async register() {
       try {
         this.error = await this.$store.dispatch("register", {
-          name: this.name,
           username: this.username,
           password: this.password,
         });
         if (this.error === "") {
-          this.$router.push('mypage'); //This sends the user to the mypage view
+          this.$router.push('/'); //This sends the user to the mypage view
         }
       }
       catch (error) {
@@ -66,9 +58,11 @@ export default {
 <style scoped>
 form {
   border: 1px solid #ccc;
+  margin: auto;
   background-color: #eee;
   border-radius: 4px;
-  padding: 20px;
+  /* padding: 20px; */
+  width: 40%;
 }
 
 .pure-controls {
@@ -76,6 +70,6 @@ form {
 }
 
 .pure-controls button {
-  margin-left: auto;
+  margin: auto;
 }
 </style>
