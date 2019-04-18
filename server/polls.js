@@ -89,7 +89,7 @@ router.put("/:id", auth.verifyToken, User.verify, async (request, response) => {
             message: "You already voted for that option!",
           });
         } else {
-          console.log("Changing your vote!");
+          // console.log("Changing your vote!");
           let newOptions = [];
           poll.optionsVotes.forEach((voteNumber, currentIndex) => {
             if (currentIndex === vote.index) {

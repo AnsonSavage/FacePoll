@@ -64,8 +64,8 @@ userSchema.methods.removeOldTokens = function() {
 }
 
 userSchema.statics.verify = async function(request, response, next) { //This is a static method, which means that all instances of this schema will share this method. This will be middleware that validates a user's account
-  console.log(request.user_id);
-  console.log("We are now verifying the user!");
+  // console.log(request.user_id);
+  // console.log("We are now verifying the user!");
   const user = await User.findOne({
     _id: request.user_id
   });
@@ -83,7 +83,7 @@ const User = mongoose.model('User', userSchema); //Tell Mongoose to compile a mo
 
 
 router.post('/', async (request, response) => { //Endpoint to create a new user
-  console.log("Beginning to register a user.");
+  // console.log("Beginning to register a user.");
   if (!request.body.username || !request.body.password) {
     return response.status(400).send({
       message: "Username and Password are required!"
