@@ -3,6 +3,9 @@
     <loading />
     <title-bar />
     <router-view/>
+    <div class="footer">
+      <a href="https://github.com/AnsonSavage/FacePoll">Source Code on GitHub</a>
+    </div>
   </div>
 </template>
 
@@ -39,5 +42,16 @@ export default {
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+.footer {
+  box-shadow: 0px 0px 10px rgb(82, 82, 82);
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: white;
+  color: #42b983;
+  text-align: center;
+  padding: 1%;
 }
 </style>
