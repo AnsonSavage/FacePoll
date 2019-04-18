@@ -3,6 +3,8 @@
     <loading />
     <title-bar />
     <router-view/>
+    <br />
+    <br />
     <div class="footer">
       <a href="https://github.com/AnsonSavage/FacePoll">Source Code on GitHub</a>
     </div>
