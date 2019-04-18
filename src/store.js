@@ -93,12 +93,16 @@ export default new Vuex.Store({
     },
     async addCount(context, data) {
       try {
-        await axios.put("/api/polls/" + data.id, {
+        let response = await axios.put("/api/polls/" + data.id, {
           optionsVotes: data.optionsVotes,
           index: data.index
         });
+        context.dispatch('getPolls');
+        return response.data.message;
       } catch (error) {
-        console.log(error);
+        console.log(error.response.data.message);
+        context.dispatch('getPolls');
+        return error.response.data.message;
       }
     }
   }

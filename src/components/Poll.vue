@@ -24,6 +24,9 @@
         </p>
       </div>
     </div>
+    <p class="message">
+      {{message}}
+    </p>
     <div class="pollBottomButtons">
       <button v-if="poll.user.username===user.username" v-on:click="deletePoll()" class="pure-button delete">Delete Poll</button>
       <!-- Note that the delete button is only being hidden by the front end! We've got to change this. -->
@@ -41,7 +44,7 @@ export default {
   },
   data() {
     return {
-
+      message: ""
     };
   },
   methods: {
@@ -52,8 +55,8 @@ export default {
         optionsVotes: this.poll.optionsVotes,
         index: index
       };
-      await this.$store.dispatch('addCount', data);
-      await this.$store.dispatch('getPolls');
+      this.message = await this.$store.dispatch('addCount', data);
+      // await this.$store.dispatch('getPolls');
     },
     async deletePoll() {
       this.$store.dispatch('deletePoll', this.poll._id)
@@ -153,5 +156,9 @@ button {
   /* padding: 1%; */
   display: flex;
   flex-direction: column;
+}
+
+.message {
+  color: rgb(237, 120, 120);
 }
 </style>

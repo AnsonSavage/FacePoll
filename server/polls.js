@@ -124,7 +124,7 @@ router.put("/:id", auth.verifyToken, User.verify, async (request, response) => {
     try {
       await poll.save();
       response.status(200).send({
-        message: "Your vote has been noted!",
+        message: "Thank you for voting!",
       });
     } catch (error) {
       console.log("APPARENTLY WE DON'T SAVE POLLS AROUND HERE.");
