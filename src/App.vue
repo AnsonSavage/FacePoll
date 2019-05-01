@@ -56,4 +56,14 @@ export default {
   text-align: center;
   padding: 1%;
 }
+
+.footer a {
+  text-decoration: none;
+  color: #42b983;
+}
+
+.footer a:hover {
+  text-decoration: none;
+  color: #298b5f;
+}
 </style>

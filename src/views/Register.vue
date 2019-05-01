@@ -12,12 +12,18 @@
 
       <div class="pure-control-group">
         <label for="password">Password</label>
-        <input v-model="password" type="password" placeholder="Password">
+        <input v-on:keyup="checkPassword" v-model="password" type="password" placeholder="Password">
       </div>
 
-      <div class="pure-controls">
-        <button type="submit" class="pure-button pure-button-primary">Register</button>
+      <div class="pure-control-group">
+        <label for="password">Verify Password</label>
+        <input v-on:blur="doubleCheckPassword" v-model="verifiedPassword" type="password" placeholder="Verify Password">
       </div>
+
+      <password v-model="password" :strength-meter-only="true" :secure-length="6"/>
+      <!-- <div class="pure-controls"> -->
+        <button type="submit" class="pure-button pure-button-primary">Register</button>
+      <!-- </div> -->
     </fieldset>
   </form>
   <p v-show="error" class="error">
@@ -27,16 +33,40 @@
 </template>
 
 <script>
+import Password from 'vue-password-strength-meter';
 export default {
   name: 'register',
+  components: {
+    Password
+  },
   data() {
     return {
       username: '',
-      password: '',
+      password: null,
+      verifiedPassword: '',
       error: '',
     }
   },
   methods: {
+    checkPassword() {
+      if (this.password.length < 8) {
+        this.error = "Password must be at least 8 characters."
+      }
+      else if (!(/[0-9]/.test(this.password) && /[$@$!%*#?&]/.test(this.password))) { //Some fancy RegEx stuff
+        this.error = "Password must contain at least one digit and one special character.";
+      }
+      else {
+        this.error = "";
+      }
+    },
+    doubleCheckPassword() {
+      if ((this.password !== this.verifiedPassword) && (this.verifiedPassword !== "")) { //If there is something in the verifiedPassword box and they don't match
+        this.error = "Passwords do not match.";
+      }
+      else {
+        this.error = "";
+      }
+    },
     async register() {
       try {
         this.error = await this.$store.dispatch("register", {
@@ -64,12 +94,16 @@ form {
   /* padding: 20px; */
   width: 40%;
 }
-
+password {
+  margin: auto;
+}
 .pure-controls {
   display: flex;
 }
 
 .pure-controls button {
-  margin: auto;
+  /* margin: auto; */
+  /* margin-left: auto;
+  margin-right: auto; */
 }
 </style>
