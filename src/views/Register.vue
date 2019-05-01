@@ -7,7 +7,7 @@
       <p class="pure-form-message-inline">All fields are required.</p>
       <div class="pure-control-group">
         <label for="username">Username</label>
-        <input v-model="username" type="text" placeholder="Username">
+        <input v-on:keyup="clearError" v-model="username" type="text" placeholder="Username">
       </div>
 
       <div class="pure-control-group">
@@ -17,12 +17,12 @@
 
       <div class="pure-control-group">
         <label for="password">Verify Password</label>
-        <input v-on:blur="doubleCheckPassword" v-model="verifiedPassword" type="password" placeholder="Verify Password">
+        <input v-on:keyup="doubleCheckPassword" v-model="verifiedPassword" type="password" placeholder="Verify Password">
       </div>
 
       <password v-model="password" :strength-meter-only="true" :secure-length="6"/>
       <!-- <div class="pure-controls"> -->
-        <button type="submit" class="pure-button pure-button-primary">Register</button>
+        <button type="submit" v-bind:class="error === '' && verifiedPassword !== '' ? 'pure-button pure-button-primary' : 'pure-button-disabled'">Register</button>
       <!-- </div> -->
     </fieldset>
   </form>
@@ -42,12 +42,15 @@ export default {
   data() {
     return {
       username: '',
-      password: null,
+      password: '',
       verifiedPassword: '',
       error: '',
     }
   },
   methods: {
+    clearError() {
+      this.error = "";
+    },
     checkPassword() {
       if (this.password.length < 8) {
         this.error = "Password must be at least 8 characters."
@@ -60,14 +63,18 @@ export default {
       }
     },
     doubleCheckPassword() {
-      if ((this.password !== this.verifiedPassword) && (this.verifiedPassword !== "")) { //If there is something in the verifiedPassword box and they don't match
+      if ((this.password !== this.verifiedPassword)) { //If there is something in the verifiedPassword box and they don't match
         this.error = "Passwords do not match.";
       }
       else {
         this.error = "";
+        this.checkPassword();
       }
     },
     async register() {
+      if (this.error !== "") {
+        return; //Don't do anything if there's an error
+      }
       try {
         this.error = await this.$store.dispatch("register", {
           username: this.username,
